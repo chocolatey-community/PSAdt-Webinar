@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Do not remove this test for UTF-8: if “Ω” doesn’t appear as greek uppercase omega letter enclosed in quotation marks, you should use an editor that supports UTF-8, not this one. -->
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>7z-psadt</id>
+    <version>24.09</version>
+    <title>7z-psadt (Install)</title>
+    <authors>me</authors>
+    <tags>7z-psadt \</tags>
+    <summary>Sample Package to install 7zip with PSAdt and Chocolatey</summary>
+    <description>Sample Package to install 7zip with PSAdt and Chocolatey</description>
+  </metadata>
+  <files>
+    <!-- this section controls what actually gets packaged into the Chocolatey package -->
+    <file src="tools\**" target="tools" />
+  </files>
+</package>
