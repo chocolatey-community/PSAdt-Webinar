@@ -23,6 +23,7 @@ $powershellArgs = @('-File', "$adtScript", '-DeploymentType', 'Install', '-Deplo
 $powershell = (Get-Command powershell).Source
 $process = Start-Process $powershell -ArgumentList $powershellArgs -WorkingDirectory $adtFolder -PassThru -Wait -NoNewWindow
 
+Write-Host "Exit code will be: $($process.ExitCode)"
 # If the user defers, we need to fail the package
 $psAdtExitCodes = @{
     60001 = 'An error occurred in Deploy-Application.ps1. Check your script syntax use.'
@@ -41,7 +42,7 @@ $psAdtExitCodes = @{
 }
 
 try {
-    throw $psAdtExitCodes[$process.ExitCode]
+    throw $psAdtExitCodes[[int]$process.ExitCode]
 }
 catch {
     throw "Unknown error occurred. See $env:ChocolateyInstall\logs\chocolatey.log for details."
