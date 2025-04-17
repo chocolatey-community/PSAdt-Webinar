@@ -21,7 +21,11 @@ Param(
     [Parameter(ParameterSetName = 'default')]
     [Parameter(ParameterSetName = 'Template')]
     [Hashtable]
-    $TemplateArgs
+    $TemplateArgs,
+
+    [Parameter()]
+    [Switch]
+    $CompilePackage
 )
 
 begin {
@@ -43,22 +47,20 @@ begin {
 
 end {
     # Create the Chocolatey package
-    $newArgs = [System.Collections.Generic.List[string]]::new()
     $requiredArgs = @('new', $PackageId, "--output-directory='$OutputDirectory'")
-    $newArgs.AddRange($requiredArgs)
 
     if($Template){
         $requiredArgs += "--template='$Template'"
         if ($TemplateArgs) {
             $TemplateArgs.GetEnumerator() | Foreach-Object {
-                $newArgs.Add($("/{0}='{1}'" -f $_.Key, $_.Value))
+                $requiredArgs += $("{0}='{1}'" -f $_.Key, $_.Value)
             }
         }
     
     }
     # Process any template values
 
-    & $choco @newArgs
+    & $choco @requiredArgs
 
     # Get the tools folder
     $toolsDir = Join-Path $OutputDirectory -ChildPath "$PackageId\tools"
