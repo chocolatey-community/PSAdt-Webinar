@@ -6,6 +6,8 @@ Learn how to streamline your transition to Chocolatey without having to redo any
 
 ## Available Templates
 
+Find information about the individual templates including usage and setup instructions at the links below.
+
 - [psadtv4](template-psadtv4.md)
 - [psadtv4-large](template-psadtv4-large.md)
 
@@ -23,11 +25,9 @@ You can add all of the templates included in this repository by using the includ
 . .\Copy-Template.ps1 -Template psadtv4,psadtv4-large
 ```
 
-## ConvertTo-ChocolateyPackage.ps1
-
-This helper script works in tandem with the PSAdt template allowing you to quickly convert a PSAdt application into a Chocolatey package without having to copy files manually, or edit any Chocolatey packaging scripts. Simply pass the appropriate parameters, and let Chocolatey do all the work!
-
 ## Using the new Chocolatey Package
+
+### Installation
 
 By default the Chocolatey package will use PSADT's `Interactive` DeployMode to allow for the use of deferments by the end user.
 This will fail the package installation up to the deferrment allowance of the psadt application.
@@ -42,6 +42,14 @@ You may override this behavior with the use of package parameters
 # Set DeployMode to Silent, so no deferral by the end user can occur and the application is installed.
 choco install <packageid> -y --package-parameters="/DeployMode='Silent'"
 ```
+
+### Uninstallation
+
+In _most_ cases, Chocolatey's AutoUninstaller feature will handle the software removal for you while uninstalling the Chocolatey package.
+
+If you would like to use the PSAdt app's uninstallation methods, or the package does not remove the software correctly, copy the included `chocolateyUninstall.ps1` file from this repository to the tools directory of your new Chocolatey package, and run `choco pack` against the package nuspec to include the script in the compiled Chocolatey package.
+
+With the script include, Chocolatey will attempt to use the PSAdt app's uninstallation instruction set.
 
 ## Additional Resources
 

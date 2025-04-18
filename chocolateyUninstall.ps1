@@ -1,6 +1,6 @@
 $ErrorActionPreference = 'Stop'
 $toolsDir = Split-Path -Parent $MyInvocation.MyCommand.Definition
-$adtFolder = Join-Path $toolsDir -ChildPath '[[PackageNameLower]]'
+$adtFolder = Join-Path $toolsDir -ChildPath $env:ChocolateyPackageName
 $adtScript = Join-Path $adtFolder -ChildPath 'Invoke-AppDeployToolkit.ps1'
 $pp = Get-PackageParameters
 # Determine the Deploy mode based on package parameter being passed or not
