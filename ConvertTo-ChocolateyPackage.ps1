@@ -1,31 +1,56 @@
-[CmdletBinding(DefaultParameterSetName = 'default')]
-Param(
+<#
+    .SYNOPSIS
+        Wraps an existing PSAppDeployToolkit v4 deployment in a Chocolatey package.
 
-    [Parameter(ParameterSetName = 'default')]
-    [String]
-    $PackageId,
+    .DESCRIPTION
+        Copies a PSADT deployment into a templated Chocolatey package, with handling for various results.
 
-    [Parameter(Mandatory, ParameterSetName = 'default')]
-    [String]
-    $PSADTPath,
+    .EXAMPLE
+        ConvertTo-ChocolateyPackage -Id 
 
-    [Parameter(ParameterSetName = 'default')]
-    [String]
-    $OutputDirectory = $PSScriptRoot,
+    .EXAMPLE
+        Get-ChildItem $PSADTPackagesFolder | ConvertTo-ChocolateyPackage
 
-    [Parameter(ParameterSetName = 'default')]
+    .LINK
+        https://github.com/chocolatey-community/PSADT-Webinar
+#>
+[CmdletBinding(DefaultParameterSetName = 'Default')]
+param(
+    # The ID to use for the Chocolatey package
+    [Parameter(ValueFromPipelineByPropertyName, ParameterSetName = 'Default')]
+    [Parameter(ParameterSetName = 'Large')]
+    [Alias('BaseName','PackageId')]
+    [String]$Id = $(Split-Path $PSADTPath -Leaf),
+
+    # The path to the PSADT package you want to convert
+    [Parameter(ValueFromPipeline, ValueFromPipelineByPropertyName, Mandatory, ParameterSetName = 'Default')]
+    [ValidateScript({Test-Path "$_\Invoke-AppDeployToolkit.ps1"})]
+    [Alias('PSPath')]
+    [String]$PSADTPath,
+
+    [Parameter(ValueFromPipeline, ValueFromPipelineByPropertyName, Mandatory, ParameterSetName = 'Large')]
+    [ValidateScript({Test-Path $_})]
+    [String]$LargeAppArchive,
+
+    # The directory to create the Chocolatey package in
+    [Parameter(ParameterSetName = 'Default')]
+    [Parameter(ParameterSetName = 'Large')]
+    [String]$OutputDirectory = $PSScriptRoot,
+
+    # The name of a specific Chocolatey package template to use
+    [Parameter(ParameterSetName = 'Default')]
     [Parameter(Mandatory, ParameterSetName = 'Template')]
-    [String]
-    $Template,
+    [Parameter(ParameterSetName = 'Large')]
+    [String]$Template,
 
-    [Parameter(ParameterSetName = 'default')]
+    # Arguments to pass to the Chocolatey package template
+    [Parameter(ParameterSetName = 'Default')]
     [Parameter(ParameterSetName = 'Template')]
-    [Hashtable]
-    $TemplateArgs,
+    [Parameter(ParameterSetName = 'Large')]
+    [Hashtable]$TemplateArgs,
 
-    [Parameter()]
-    [Switch]
-    $CompilePackage
+    # If passed, compiles the package at the end of the script
+    [switch]$CompilePackage
 )
 
 begin {
@@ -47,7 +72,7 @@ begin {
 
 end {
     # Create the Chocolatey package
-    $requiredArgs = @('new', $PackageId, "--output-directory='$OutputDirectory'")
+    $requiredArgs = @('new', $Id, "--output-directory='$OutputDirectory'")
 
     if($Template){
         $requiredArgs += "--template='$Template'"
@@ -63,14 +88,21 @@ end {
     & $choco @requiredArgs
 
     # Get the tools folder
-    $toolsDir = Join-Path $OutputDirectory -ChildPath "$PackageId\tools"
+    $toolsDir = Join-Path $OutputDirectory -ChildPath "$Id\tools"
 
     # Copy PSADT application files to tools dir
-    Copy-Item $PSADTPath -Recurse -Destination $toolsDir
+    switch($PSCmdlet.ParameterSetName){
+        'Large' {
+            $null
+        }
+        'Default' {
+            Copy-Item $PSADTPath -Recurse -Destination $toolsDir
+        }
+    }
 
     # Compile the package if requested
     if ($CompilePackage) {
-        $nuspec = (Get-ChildItem $OutputDirectory -Filter *.nuspec -Recurse).FullName
+        $nuspec = (Get-ChildItem $OutputDirectory -Filter "$($Id).nuspec" -Recurse).FullName
 
         $packArgs = @('pack', $nuspec, "--output-directory='$OutputDirectory'")
         & $choco @packArgs
