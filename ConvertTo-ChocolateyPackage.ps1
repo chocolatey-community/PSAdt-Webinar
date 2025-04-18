@@ -18,7 +18,7 @@
 param(
     # The ID to use for the Chocolatey package
     [Parameter(ValueFromPipelineByPropertyName, ParameterSetName = 'Default')]
-    [Parameter(ParameterSetName = 'Large')]
+    [Parameter(ParameterSetName = 'Large',Mandatory)]
     [Alias('BaseName','PackageId')]
     [String]$Id = $(Split-Path $PSADTPath -Leaf),
 
@@ -30,6 +30,7 @@ param(
 
     [Parameter(ValueFromPipeline, ValueFromPipelineByPropertyName, Mandatory, ParameterSetName = 'Large')]
     [ValidateScript({Test-Path $_})]
+    [Alias('PSAdtArchive')]
     [String]$LargeAppArchive,
 
     # The directory to create the Chocolatey package in
@@ -93,7 +94,7 @@ end {
     # Copy PSADT application files to tools dir
     switch($PSCmdlet.ParameterSetName){
         'Large' {
-            $null
+            $requiredArgs += $("Location='{0}" -f $LargeAppArchive)
         }
         'Default' {
             Copy-Item $PSADTPath -Recurse -Destination $toolsDir
