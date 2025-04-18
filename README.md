@@ -29,9 +29,16 @@ This helper script works in tandem with the PSADT template allowing you to quick
 
 ## Using the new Chocolatey Package
 
-By default the Chocolatey package will use PSADT's `Interactive` DeployMode to allow for the use of deferments by the end user. You may override this behavior with the use of package parameters
+By default the Chocolatey package will use PSADT's `Interactive` DeployMode to allow for the use of deferments by the end user.
+This will fail the package installation up to the deferrment allowance of the psadt application.
 
 ```powershell
-# Set DeployMode to Silent, so no deferral by the end user can occur
+choco install <packageid> -y
+```
+
+You may override this behavior with the use of package parameters
+
+```powershell
+# Set DeployMode to Silent, so no deferral by the end user can occur and the application is installed.
 choco install <packageid> -y --package-parameters="/DeployMode='Silent'"
 ```
