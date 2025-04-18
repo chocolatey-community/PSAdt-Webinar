@@ -25,7 +25,7 @@ You can add all of the templates included in this repository by using the includ
 
 ## ConvertTo-ChocolateyPackage.ps1
 
-This helper script works in tandem with the PSADT template allowing you to quickly convert a PSAdt application into a Chocolatey package without having to copy files manually, or edit any Chocolatey packaging scripts. Simply pass the appropriate parameters, and let Chocolatey do all the work!
+This helper script works in tandem with the PSAdt template allowing you to quickly convert a PSAdt application into a Chocolatey package without having to copy files manually, or edit any Chocolatey packaging scripts. Simply pass the appropriate parameters, and let Chocolatey do all the work!
 
 ## Using the new Chocolatey Package
 
@@ -42,3 +42,7 @@ You may override this behavior with the use of package parameters
 # Set DeployMode to Silent, so no deferral by the end user can occur and the application is installed.
 choco install <packageid> -y --package-parameters="/DeployMode='Silent'"
 ```
+
+## Additional Resources
+
+- [Back To Basics: Chocolatey Templates (Youtube)](https://www.youtube.com/watch?v=J43T3QArbNE)
