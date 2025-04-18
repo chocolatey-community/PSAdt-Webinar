@@ -6,8 +6,8 @@ Learn how to streamline your transition to Chocolatey without having to redo any
 
 ## Available Templates
 
-- [psadtv4](.\template-psadtv4.md)
-- [psadtv4-large](.\template-psadtv4-large.md)
+- [psadtv4](template-psadtv4.md)
+- [psadtv4-large](template-psadtv4-large.md)
 
 ## Adding Templates to Chocolatey
 
