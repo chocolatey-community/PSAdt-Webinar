@@ -49,7 +49,7 @@ In _most_ cases, Chocolatey's AutoUninstaller feature will handle the software r
 
 If you would like to use the PSAdt app's uninstallation methods, or the package does not remove the software correctly, copy the included `chocolateyUninstall.ps1` file from this repository to the tools directory of your new Chocolatey package, and run `choco pack` against the package nuspec to include the script in the compiled Chocolatey package.
 
-With the script include, Chocolatey will attempt to use the PSAdt app's uninstallation instruction set.
+With the script included, Chocolatey will attempt to use the PSAdt app's uninstallation instruction set.
 
 ## Additional Resources
 
