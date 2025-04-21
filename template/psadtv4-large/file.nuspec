@@ -14,7 +14,7 @@
 
 This package supports the following package parameters:
 
-- `/DeployMode`: Can be `Silent`, `Interactive`. Defaults to `Interactive`
+- `/DeployMode`: Can be `Silent`, `Interactive`, `NonInteractive`. Defaults to `Interactive`
     </description>
   </metadata>
   <files>
