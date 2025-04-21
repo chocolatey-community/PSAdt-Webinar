@@ -24,7 +24,7 @@ param(
 
     # The path to the PSADT package you want to convert
     [Parameter(ValueFromPipeline, ValueFromPipelineByPropertyName, Mandatory, ParameterSetName = 'Default')]
-    [ValidateScript({Test-Path "$_\Invoke-AppDeployToolkit.ps1"})]
+    [ValidateScript({Test-Path $_})]
     [Alias('PSPath')]
     [String]$PSADTPath,
 
