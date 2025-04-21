@@ -10,6 +10,7 @@ Find information about the individual templates including usage and setup instru
 
 - [psadtv4](template-psadtv4.md)
 - [psadtv4-large](template-psadtv4-large.md)
+- [psadtv3](template-psadtv3.md)
 
 ## Adding Templates to Chocolatey
 
